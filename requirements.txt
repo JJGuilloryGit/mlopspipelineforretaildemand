@@ -1,0 +1,10 @@
+# Core ML packages
+numpy
+pandas
+scikit-learn
+
+# Database connection
+psycopg2-binary
+
+# Testing
+pytest
