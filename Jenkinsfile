@@ -48,8 +48,8 @@ pipeline {
             node {
                 cleanWs()
                 slackSend(
-                    channel: '#general',
-                    teamDomain: 'dyr3231',
+                    channel: '#ai',
+                    teamDomain: 'iqd5455',
                     tokenCredentialId: 'slack-token',
                     message: "Pipeline ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 )
