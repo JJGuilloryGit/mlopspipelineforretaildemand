@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')
-    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+    AWS_SECRET_ACCESS_KEY = credentials('aws-secret-key')
     TF_VAR_project = 'mlops-retail-demand'
   }
 
@@ -43,15 +43,17 @@ pipeline {
     }
   }
 
-  post {
-    success {
-      slackSend(channel: '#mlops-alerts', message: "✅ SUCCESS (TEST): ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
+ post {
+        always {
+            node {
+                cleanWs()
+                slackSend(
+                    channel: '#general',
+                    teamDomain: 'dyr3231',
+                    tokenCredentialId: 'slack-token',
+                    message: "Pipeline ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                )
+            }
+        }
     }
-    failure {
-      slackSend(channel: '#mlops-alerts', message: "❌ FAILURE (TEST): ${env.JOB_NAME} #${env.BUILD_NUMBER} - ${env.BUILD_URL}")
-    }
-    always {
-      cleanWs()
-    }
-  }
 }
