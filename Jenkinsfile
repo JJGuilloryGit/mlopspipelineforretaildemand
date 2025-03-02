@@ -7,12 +7,13 @@ pipeline {
     TF_VAR_project = 'mlops-retail-demand'
   }
 
-  stages {
-    stage('Checkout Repo') {
-      steps {
-        git credentialsId: 'github-creds-id', url: 'https://github.com/JJGuilloryGit/mlopspipelineforretaildemand.git', branch: 'feature/full-pipeline-setup'
-      }
-    }
+    stages {
+        stage('Checkout Repo') {
+            steps {
+                git credentialsId: 'github-creds-id', 
+                    url: 'https://github.com/JJGuilloryGit/mlopspipelineforretaildemand.git', 
+                    branch: 'feature/full-pipeline-setup'
+            }
 
     stage('Terraform Init') {
       steps {
@@ -45,7 +46,7 @@ pipeline {
 
  post {
         always {
-            node {
+            node('built-in') {  // Specify 'built-in' or 'any' as the label
                 cleanWs()
                 slackSend(
                     channel: '#ai',
