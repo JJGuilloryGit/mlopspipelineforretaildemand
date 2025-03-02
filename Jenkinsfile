@@ -1,6 +1,6 @@
 pipeline {
     agent any
-
+    
     tools {
         terraform 'terraform'
     }
@@ -12,11 +12,15 @@ pipeline {
     }
 
     stages {
-        stage('Checkout Repo') {
+        stage('Verify Terraform') {
             steps {
-                git credentialsId: 'github-creds-id', 
-                    url: 'https://github.com/JJGuilloryGit/mlopspipelineforretaildemand.git', 
-                    branch: 'main'
+                sh 'terraform version'
+            }
+        }
+
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
         }
 
@@ -39,12 +43,6 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 echo '✅ Skipping Terraform Apply during testing to avoid AWS charges.'
-            }
-        }
-
-        stage('Run MLOps Pipeline') {
-            steps {
-                sh 'bash scripts/run_pipeline.sh'
             }
         }
     }
