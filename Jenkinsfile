@@ -47,15 +47,8 @@ pipeline {
 
     post {
         always {
-            node('built-in') {
-                cleanWs()
-                slackSend(
-                    channel: '#ai',
-                    teamDomain: 'iqd5455',
-                    tokenCredentialId: 'slack-token',
-                    message: "Pipeline ${currentBuild.result}: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
-                )
-            }
+            cleanWs()
         }
     }
 }
+
