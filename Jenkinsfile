@@ -13,12 +13,6 @@ pipeline {
     }
 
     stages {
-        stage('Verify Terraform') {
-            steps {
-                sh 'terraform version'
-            }
-        }
-
         stage('Terraform Init') {
             steps {
                 dir('terraform') {
@@ -27,21 +21,15 @@ pipeline {
             }
         }
 
-        stage('Terraform Plan') {
+        stage('Terraform Destroy') {
             steps {
                 dir('terraform') {
                     sh '''
-                    terraform plan \
+                    terraform destroy \
                       -var="sagemaker_role_arn=${SAGEMAKER_ROLE}" \
-                      -out=tfplan
+                      -auto-approve
                     '''
                 }
-            }
-        }
-
-        stage('Terraform Apply') {
-            steps {
-                echo '✅ Skipping Terraform Apply during testing to avoid AWS charges.'
             }
         }
     }
